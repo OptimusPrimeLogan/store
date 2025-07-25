@@ -98,6 +98,9 @@ INSERT INTO customer (id, name) VALUES (97, 'Maurice Hintz');
 INSERT INTO customer (id, name) VALUES (98, 'Cody Stoltenberg');
 INSERT INTO customer (id, name) VALUES (99, 'Tracey King');
 INSERT INTO customer (id, name) VALUES (100, 'Ed Glover');
+
+SELECT setval('customer_id_seq', COALESCE((SELECT MAX(id) FROM customer), 1), true);
+
 INSERT INTO "order" (id, description, customer_id) VALUES (1, 'Handcrafted Soft Chair', 6);
 INSERT INTO "order" (id, description, customer_id) VALUES (2, 'Awesome Metal Fish', 45);
 INSERT INTO "order" (id, description, customer_id) VALUES (3, 'Handmade Frozen Salad', 61);
@@ -10098,3 +10101,5 @@ INSERT INTO "order" (id, description, customer_id) VALUES (9997, 'Oriental Bronz
 INSERT INTO "order" (id, description, customer_id) VALUES (9998, 'Tasty Steel Bacon', 43);
 INSERT INTO "order" (id, description, customer_id) VALUES (9999, 'Refined Frozen Pizza', 16);
 INSERT INTO "order" (id, description, customer_id) VALUES (10000, 'Bespoke Frozen Gloves', 58);
+
+SELECT setval('order_id_seq', COALESCE((SELECT MAX(id) FROM "order"), 1), true);
