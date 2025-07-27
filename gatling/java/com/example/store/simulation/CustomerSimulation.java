@@ -18,21 +18,18 @@ public class CustomerSimulation extends Simulation {
             csv("data/customers.csv").random();
 
     // --- SCENARIO ---
-    ScenarioBuilder createAndSearchCustomer =
-            scenario("Create and Search Customer")
-                    .feed(customerFeeder) // Inject a random row from the CSV into the session
-                    .exec(
-                            http("Create Customer")
-                                    .post("/customer")
-                                    .body(StringBody("{ \"name\": \"#{customerName}\" }"))
-                                    .asJson()
-                                    .check(status().is(201)))
-                    .pause(Duration.ofSeconds(2))
-                    .exec(
-                            http("Find Customer By Name")
-                                    .get("/customer?name=#{customerName}")
-                                    .check(status().is(200))
-                                    .check(jsonPath("$[0].name").is("Alice")));
+    ScenarioBuilder createAndSearchCustomer = scenario("Create and Search Customer")
+            .feed(customerFeeder) // Inject a random row from the CSV into the session
+            .exec(http("Create Customer")
+                    .post("/customer")
+                    .body(StringBody("{ \"name\": \"#{customerName}\" }"))
+                    .asJson()
+                    .check(status().is(201)))
+            .pause(Duration.ofSeconds(2))
+            .exec(http("Find Customer By Name")
+                    .get("/customer?name=#{customerName}")
+                    .check(status().is(200))
+                    .check(jsonPath("$[0].name").is("Alice")));
 
     // --- LOAD SETUP ---
     {
