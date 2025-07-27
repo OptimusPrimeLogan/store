@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
     /**
      * Handles ResourceNotFoundException and returns a 404 Not Found response.
      *
-     * @param ex      the exception that was thrown
+     * @param ex the exception that was thrown
      * @param request the current web request
      * @return an ErrorMessage containing the error details
      */
@@ -36,7 +36,7 @@ public class GlobalExceptionHandler {
     /**
      * Handles MethodArgumentNotValidException and returns a 400 Bad Request response with validation errors.
      *
-     * @param ex      the exception that was thrown
+     * @param ex the exception that was thrown
      * @param request the current web request
      * @return an ErrorMessage containing the validation errors
      */
@@ -57,7 +57,7 @@ public class GlobalExceptionHandler {
     /**
      * Handles all other exceptions and returns a 500 Internal Server Error response.
      *
-     * @param ex      the exception that was thrown
+     * @param ex the exception that was thrown
      * @param request the current web request
      * @return an ErrorMessage containing the error details
      */

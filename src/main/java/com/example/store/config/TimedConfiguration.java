@@ -7,8 +7,8 @@ import io.micrometer.core.aop.TimedAspect;
 import io.micrometer.core.instrument.MeterRegistry;
 
 /**
- * Configuration class to enable Micrometer's TimedAspect for method timing.
- * This aspect will automatically time methods annotated with @Timed.
+ * Configuration class to enable Micrometer's TimedAspect for method timing. This aspect will automatically time methods
+ * annotated with @Timed.
  */
 @Configuration
 public class TimedConfiguration {
