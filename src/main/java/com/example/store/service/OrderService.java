@@ -10,8 +10,8 @@ import com.example.store.exception.ResourceNotFoundException;
 import com.example.store.mapper.OrderMapper;
 import com.example.store.repository.CustomerRepository;
 import com.example.store.repository.OrderRepository;
-
 import com.example.store.repository.ProductRepository;
+
 import jakarta.transaction.Transactional;
 
 import lombok.RequiredArgsConstructor;
@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -39,8 +40,8 @@ public class OrderService {
     }
 
     /**
-     * Creates a new order based on the provided CreateOrderRequest.
-     * The order is associated with a customer and a list of products.
+     * Creates a new order based on the provided CreateOrderRequest. The order is associated with a customer and a list
+     * of products.
      *
      * @param request The request containing order details, customer ID, and product IDs.
      * @return The created OrderDTO.
@@ -56,7 +57,7 @@ public class OrderService {
 
         // 2. Create the base order
         Order newOrder = new Order();
-        newOrder.setDescription(request.description());
+        newOrder.setOrderNumber(UUID.randomUUID()); // Generate the unique order number
         newOrder.setCustomer(customer);
 
         // 3. Find all products and create OrderItems

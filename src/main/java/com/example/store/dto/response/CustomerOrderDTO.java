@@ -1,3 +1,5 @@
 package com.example.store.dto.response;
 
-public record CustomerOrderDTO(Long id, String description) {}
+import java.util.UUID;
+
+public record CustomerOrderDTO(Long id, UUID orderNumber) {}

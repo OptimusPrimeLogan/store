@@ -1,7 +1,6 @@
 package com.example.store.mapper;
 
 import com.example.store.dto.response.ProductDTO;
-import com.example.store.dto.response.ProductInOrderDTO;
 import com.example.store.entity.OrderItem;
 import com.example.store.entity.Product;
 import org.mapstruct.Mapper;
@@ -10,7 +9,6 @@ import org.mapstruct.Named;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
@@ -18,8 +16,6 @@ public interface ProductMapper {
     ProductDTO productToProductDTO(Product product);
 
     List<ProductDTO> productsToProductDTOs(List<Product> products);
-
-    ProductInOrderDTO productToProductInOrderDTO(Product product);
 
     @Named("orderItemsToOrderIds")
     default List<Long> orderItemsToOrderIds(List<OrderItem> orderItems) {
@@ -29,6 +25,6 @@ public interface ProductMapper {
         return orderItems.stream()
                 .map(orderItem -> orderItem.getOrder().getId())
                 .distinct() // Avoid duplicate order IDs if a product appears multiple times
-                .collect(Collectors.toList());
+                .toList();
     }
 }

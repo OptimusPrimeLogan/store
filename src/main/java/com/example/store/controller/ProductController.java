@@ -1,20 +1,21 @@
 package com.example.store.controller;
 
-import com.example.store.dto.response.ProductDTO;
 import com.example.store.dto.request.CreateProductRequest;
+import com.example.store.dto.response.ProductDTO;
 import com.example.store.service.ProductService;
-import io.micrometer.core.annotation.Timed;
+
 import jakarta.validation.Valid;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import io.micrometer.core.annotation.Timed;
+
 import java.util.List;
 
-/**
- * Controller for managing products in the store.
- * Provides endpoints to retrieve and create products.
- */
+/** Controller for managing products in the store. Provides endpoints to retrieve and create products. */
 @RestController
 @RequestMapping("/products")
 @RequiredArgsConstructor
@@ -42,7 +43,7 @@ public class ProductController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Timed(value = "product.create.time", description = "Measures the time taken to create a product")
-    public ProductDTO createProduct(@Valid @RequestBody CreateProductRequest productRequest){
+    public ProductDTO createProduct(@Valid @RequestBody CreateProductRequest productRequest) {
         return productService.createProduct(productRequest);
     }
 
@@ -54,9 +55,7 @@ public class ProductController {
      */
     @GetMapping("/{id}")
     @Timed(value = "product.find.by.id.time", description = "Measures the time taken to retrieve a product by ID")
-    public ProductDTO findProductById(@PathVariable Long id){
+    public ProductDTO findProductById(@PathVariable Long id) {
         return productService.findProductById(id);
     }
-
-
 }

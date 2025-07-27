@@ -203,8 +203,9 @@ components:
         id:
           type: integer
           format: int64
-        description:
+        orderNumber:
           type: string
+          format: uuid
         customer:
           $ref: '#/components/schemas/CustomerInOrder'
         products:
@@ -215,13 +216,9 @@ components:
       title: CreateOrderRequest
       type: object
       required:
-        - description
         - customerId
         - productIds
       properties:
-        description:
-          type: string
-          example: "A new order for books"
         customerId:
           type: integer
           format: int64
@@ -276,8 +273,9 @@ components:
         id:
           type: integer
           format: int64
-        description:
+        orderNumber:
           type: string
+          format: uuid
     ProductInOrder:
       title: ProductInOrder
       description: "A simplified product object for nesting inside an Order."

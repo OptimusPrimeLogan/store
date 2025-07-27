@@ -1,22 +1,20 @@
 package com.example.store.controller;
 
-import com.example.store.dto.response.CustomerDTO;
 import com.example.store.dto.request.CreateCustomerRequest;
+import com.example.store.dto.response.CustomerDTO;
 import com.example.store.service.CustomerService;
 
-import io.micrometer.core.annotation.Timed;
 import jakarta.validation.Valid;
+
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import io.micrometer.core.annotation.Timed;
+
 import java.util.List;
 
-/**
- * Controller for managing customers in the store.
- * Provides endpoints to retrieve and create customers.
- */
 @RestController
 @RequestMapping("/customer")
 @RequiredArgsConstructor

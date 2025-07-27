@@ -1,7 +1,7 @@
 package com.example.store.service;
 
-import com.example.store.dto.response.CustomerDTO;
 import com.example.store.dto.request.CreateCustomerRequest;
+import com.example.store.dto.response.CustomerDTO;
 import com.example.store.entity.Customer;
 import com.example.store.mapper.CustomerMapper;
 import com.example.store.repository.CustomerRepository;
@@ -23,8 +23,8 @@ public class CustomerService {
     private final CustomerMapper customerMapper;
 
     /**
-     * Retrieves a list of customers based on the provided name query.
-     * If the name query is empty or null, all customers are returned.
+     * Retrieves a list of customers based on the provided name query. If the name query is empty or null, all customers
+     * are returned.
      *
      * @param nameQuery The substring to search for in customer names.
      * @return A list of CustomerDTOs matching the search criteria.
