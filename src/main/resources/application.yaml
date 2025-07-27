@@ -1,9 +1,13 @@
 spring:
+  profiles:
+    # unless overridden by the SPRING_PROFILES_ACTIVE environment variable.
+    default: dev
   datasource:
-    url: jdbc:postgresql://localhost:5433/store
-    username: admin
-    password: admin
+    url: ${DB_URL:jdbc:postgresql://localhost:5433/store}
+    username: ${DB_USER:admin}
+    password: ${DB_PASSWORD:admin}
   jpa:
+#    show-sql: true
     hibernate:
       ddl-auto: validate
     properties:
@@ -13,3 +17,20 @@ spring:
         default_batch_fetch_size: 10
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yaml
+#logging:
+#  level:
+#    org.hibernate.SQL: DEBUG # Logs SQL queries
+#    org.hibernate.type.descriptor.sql: TRACE # Logs prepared statement parameters (values)
+
+springdoc:
+  swagger-ui:
+    # static OpenAPI.yaml file we placed in the resources/static folder.
+    url: /OpenAPI.yaml
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,info,metrics,liquibase,prometheus,beans"
+  endpoint:
+    prometheus:
+      enabled: true

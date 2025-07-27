@@ -1,9 +1,11 @@
 package com.example.store.controller;
 
-import com.example.store.dto.CustomerDTO;
-import com.example.store.entity.Customer;
+import com.example.store.dto.response.CustomerDTO;
+import com.example.store.dto.request.CreateCustomerRequest;
 import com.example.store.service.CustomerService;
 
+import io.micrometer.core.annotation.Timed;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -11,6 +13,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Controller for managing customers in the store.
+ * Provides endpoints to retrieve and create customers.
+ */
 @RestController
 @RequestMapping("/customer")
 @RequiredArgsConstructor
@@ -25,6 +31,7 @@ public class CustomerController {
      * @return A list of customers.
      */
     @GetMapping
+    @Timed(value = "customer.find.time", description = "Measures the time taken to retrieve customers")
     public List<CustomerDTO> findCustomers(@RequestParam(name = "name", required = false) String nameQuery) {
         return customerService.findCustomers(nameQuery);
     }
@@ -32,12 +39,13 @@ public class CustomerController {
     /**
      * Creates a new customer.
      *
-     * @param customer The customer to create.
+     * @param customerRequest The customer to create.
      * @return The created customer.
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CustomerDTO createCustomer(@RequestBody Customer customer) {
-        return customerService.createCustomer(customer);
+    @Timed(value = "customer.create.time", description = "Measures the time taken to create a customer")
+    public CustomerDTO createCustomer(@Valid @RequestBody CreateCustomerRequest customerRequest) {
+        return customerService.createCustomer(customerRequest);
     }
 }

@@ -1,25 +1,24 @@
 package com.example.store.entity;
 
 import jakarta.persistence.*;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
-public class Customer {
+public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String description;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "product")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    private Set<Order> orders = new HashSet<>();
+    private List<OrderItem> orderItems = new ArrayList<>();
 }

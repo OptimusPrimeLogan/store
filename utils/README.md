@@ -8,7 +8,7 @@ npm install
 
 # Execution
 ```shell
-node ./generateData.js > ../src/main/resources/db/changelog/data.sql
+node ./generateData.js > ../src/main/resources/db/changelog/data2.sql
 ```
 
 # Notes

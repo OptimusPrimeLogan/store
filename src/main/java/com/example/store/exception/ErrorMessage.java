@@ -1,15 +1,11 @@
 package com.example.store.exception;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
 import java.time.Instant;
+import java.util.List;
 
-@Data
-@AllArgsConstructor
-public class ErrorMessage {
-    private int statusCode;
-    private Instant timestamp;
-    private String message;
-    private String description;
-}
+public record ErrorMessage(
+    int statusCode,
+    Instant timestamp,
+    List<String> message,
+    String description
+) {}

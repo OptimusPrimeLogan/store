@@ -1,0 +1,297 @@
+openapi: 3.0.0
+info:
+  title: store
+  version: '1.0'
+  description: A simple store
+  contact:
+    name: SecuritEase Dev
+    url: 'https://www.securitease.com'
+    email: internal@securitease.com
+  termsOfService: 'https://www.securitease.com'
+  license:
+    name: Apache 2.0
+    url: 'https://www.apache.org/licenses/LICENSE-2.0.htm'
+servers:
+  - url: 'http://localhost:8080'
+    description: dev
+paths:
+  /customer:
+    get:
+      summary: Get Customers
+      tags:
+        - customer
+      parameters:
+        - name: name
+          in: query
+          description: Filter customers by a substring of their name (case-insensitive).
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+      operationId: getCustomers
+      description: Get all customers, optionally filtering by name.
+    post:
+      summary: Create Customer
+      tags:
+        - customer
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+      operationId: createCustomer
+      description: Create a new customer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCustomerRequest'
+  /order:
+    get:
+      summary: Get Orders
+      tags:
+        - order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+      operationId: getOrders
+      description: Get all orders
+    post:
+      summary: Create Order
+      tags:
+        - order
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+      operationId: createOrder
+      description: Create a new order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrderRequest'
+  /order/{id}:
+    get:
+      summary: Get an Order by ID
+      tags:
+        - order
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the order to retrieve.
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '404':
+          description: Order not found
+      operationId: getOrderById
+      description: Get a specific Order by its ID
+  /products:
+    get:
+      summary: Get Products
+      tags:
+        - product
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+      operationId: getProducts
+      description: Get all products and the IDs of orders they belong to.
+    post:
+      summary: Create Product
+      tags:
+        - product
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+      operationId: createProduct
+      description: Create a new product
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProductRequest'
+  /products/{id}:
+    get:
+      summary: Get a Product by ID
+      tags:
+        - product
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the product to retrieve.
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Product not found
+      operationId: getProductById
+      description: Get a specific product by its ID.
+components:
+  schemas:
+    Customer:
+      title: Customer
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderInCustomer'
+    CreateCustomerRequest:
+      title: CreateCustomerRequest
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          example: "John Doe"
+    Order:
+      title: Order
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        description:
+          type: string
+        customer:
+          $ref: '#/components/schemas/CustomerInOrder'
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductInOrder'
+    CreateOrderRequest:
+      title: CreateOrderRequest
+      type: object
+      required:
+        - description
+        - customerId
+        - productIds
+      properties:
+        description:
+          type: string
+          example: "A new order for books"
+        customerId:
+          type: integer
+          format: int64
+          example: 101
+        productIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+          example: [1, 5, 12]
+          description: A list of product IDs to include in the order.
+    Product:
+      title: Product
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        description:
+          type: string
+        orderIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+          description: A list of order IDs that contain this product.
+    CreateProductRequest:
+      title: CreateProductRequest
+      type: object
+      required:
+        - description
+      properties:
+        description:
+          type: string
+          example: "A brand new laptop"
+    # --- Reusable nested objects to avoid circular references ---
+    CustomerInOrder:
+      title: CustomerInOrder
+      description: "A simplified customer object for nesting inside an Order."
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+    OrderInCustomer:
+      title: OrderInCustomer
+      description: "A simplified order object for nesting inside a Customer."
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        description:
+          type: string
+    ProductInOrder:
+      title: ProductInOrder
+      description: "A simplified product object for nesting inside an Order."
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        description:
+          type: string
+tags:
+  - name: customer
+    description: Customer operations
+  - name: order
+    description: Order operations
+  - name: product
+    description: Product operations
