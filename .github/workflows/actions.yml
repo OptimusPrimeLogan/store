@@ -2,8 +2,9 @@ name: Java CI with Gradle and Docker
 
 # Controls when the workflow will run
 on:
+  # Run on pushes to ANY branch
   push:
-    branches: [ "main" ]
+  # Also run on pull requests targeting the main branch
   pull_request:
     branches: [ "main" ]
 
@@ -38,6 +39,7 @@ jobs:
           path: build/reports/jacoco/test/html
 
   # This job builds and pushes the Docker image to the GitHub Container Registry
+  # It ONLY runs on a push to the 'main' branch.
   build-and-push-docker:
     name: Build and Push Docker Image
     runs-on: ubuntu-latest

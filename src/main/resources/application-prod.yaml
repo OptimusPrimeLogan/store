@@ -1,15 +1,31 @@
-logging:
-  level:
-    com.example.store: INFO
-    org.hibernate.SQL: INFO
-
+# Production-specific settings
 spring:
+  datasource:
+    # In production, these values MUST be provided as environment variables.
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
   jpa:
     properties:
       hibernate:
         format_sql: false
         use_sql_comments: false
+        generate_statistics: false
+    # 'validate' is the safest option for production. It checks that the
+    # schema matches the entities without making any changes.
+    hibernate:
+      ddl-auto: validate
+  liquibase:
+    # Ensure Liquibase is explicitly enabled for production schema management.
+    enabled: true
 
 springdoc:
   swagger-ui:
+    # Disable Swagger UI in production for security.
     enabled: false
+
+# Log at a higher level in production to reduce noise.
+logging:
+  level:
+    root: INFO
+    com.example.store: INFO

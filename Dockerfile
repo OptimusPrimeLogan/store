@@ -1,10 +1,44 @@
-FROM eclipse-temurin:17-jdk AS build
-WORKDIR /app
-COPY . .
-RUN ./gradlew clean build -x test
+# --- Stage 1: Build the application ---
+FROM gradle:8.8-jdk17-alpine AS build
 
-FROM eclipse-temurin:17-jre
+# Set the working directory
+WORKDIR /home/gradle/src
+
+# Copy only the necessary build files first to leverage Docker's layer cache.
+# If these files don't change, Docker won't re-download dependencies.
+COPY build.gradle settings.gradle gradlew ./
+COPY gradle ./gradle
+
+# Grant executable permissions to the Gradle wrapper
+RUN chmod +x ./gradlew
+
+# First, resolve and download dependencies. This creates a cached layer.
+RUN ./gradlew dependencies --no-daemon
+
+# Then, copy the application source code. Changes here won't invalidate the dependency layer.
+COPY src ./src
+
+# Build the application, creating a layered JAR.
+# --no-daemon is recommended for CI/CD environments.
+RUN ./gradlew bootJar --no-daemon
+
+# --- Stage 2: Create the final, optimized production image ---
+FROM eclipse-temurin:17-jre-jammy
+
+# Set the working directory inside the final container
 WORKDIR /app
-COPY --from=build /app/build/libs/*.jar app.jar
+
+# Set the active Spring profile to 'prod'.
+# This is the standard way to configure the profile for a containerized app.
+ENV SPRING_PROFILES_ACTIVE=prod
+
+# Copy the layered JAR from the build stage.
+# Spring Boot's layered mode separates the JAR into logical layers,
+# which improves Docker's caching and speeds up subsequent builds.
+COPY --from=build /home/gradle/src/build/libs/*.jar app.jar
+
+# Expose the port the application runs on
 EXPOSE 8080
+
+# The entrypoint command to run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]

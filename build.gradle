@@ -5,6 +5,7 @@ plugins {
     id 'org.liquibase.gradle' version '2.2.0'
     id 'com.diffplug.spotless' version '6.25.0'
     id 'jacoco'
+    id 'io.gatling.gradle' version '3.11.4'
 }
 
 group = 'com.example'
@@ -31,6 +32,20 @@ spotless {
     }
 }
 
+gatling {
+    // Automatically discover and run all simulations
+    enterprise {
+        // Empty block ensures the plugin uses the open-source Gatling version
+    }
+}
+
+sourceSets {
+    gatling {
+        java.srcDirs = ['gatling/java']
+        resources.srcDirs = ['gatling/resources']
+    }
+}
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -48,13 +63,17 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.9'
     implementation 'io.micrometer:micrometer-registry-prometheus:1.15.2'
     implementation 'org.springframework.boot:spring-boot-starter-aop'
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+    implementation 'org.hibernate.orm:hibernate-jcache'
+    implementation 'org.ehcache:ehcache:3.10.8:jakarta'
 
     // Test dependencies
     testCompileOnly 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     testAnnotationProcessor 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.mapstruct:mapstruct-processor:1.6.2'
+    testImplementation 'org.testcontainers:postgresql:1.21.3'
+    testImplementation 'org.testcontainers:junit-jupiter:1.21.3'
 }
 
 tasks.named('test') {
