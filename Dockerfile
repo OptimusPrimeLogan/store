@@ -6,21 +6,18 @@ WORKDIR /home/gradle/src
 
 # Copy only the necessary build files first to leverage Docker's layer cache.
 # If these files don't change, Docker won't re-download dependencies.
-COPY build.gradle settings.gradle gradlew ./
+COPY build.gradle settings.gradle ./
 COPY gradle ./gradle
 
-# Grant executable permissions to the Gradle wrapper
-RUN chmod +x ./gradlew
-
 # First, resolve and download dependencies. This creates a cached layer.
-RUN ./gradlew dependencies --no-daemon
+RUN gradle dependencies --no-daemon
 
 # Then, copy the application source code. Changes here won't invalidate the dependency layer.
 COPY src ./src
 
 # Build the application, creating a layered JAR.
 # --no-daemon is recommended for CI/CD environments.
-RUN ./gradlew bootJar --no-daemon
+RUN gradle bootJar --no-daemon
 
 # --- Stage 2: Create the final, optimized production image ---
 FROM eclipse-temurin:17-jre-jammy
