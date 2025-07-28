@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: store-app-deployment
+  namespace: prod
+  labels:
+    app: store-app
+spec:
+  replicas: 2 # Run 2 instances for availability
+  selector:
+    matchLabels:
+      app: store-app
+  template:
+    metadata:
+      labels:
+        app: store-app
+    spec:
+      containers:
+        - name: store-app
+          image: ghcr.io/optimusprimelogan/store:main
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: store-app-config
+            - secretRef:
+                name: store-app-secret
+          # Probes are crucial for Kubernetes to manage your app's lifecycle
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: http # or actuator port if different
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: http # or actuator port if different
+            initialDelaySeconds: 45
+            periodSeconds: 15
+          # Set resource requests and limits for stable performance
+          resources:
+            requests:
+              cpu: "250m" # 0.25 CPU core
+              memory: "512Mi"
+            limits:
+              cpu: "1" # 1 CPU core
+              memory: "1Gi"

@@ -40,5 +40,7 @@ COPY --from=build /home/gradle/src/build/libs/*.jar app.jar
 # Expose the port the application runs on
 EXPOSE 8080
 
+ENV JAVA_OPTS="-Xmx512m -Xms256m -XX:+UseG1GC"
+
 # The entrypoint command to run the application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]

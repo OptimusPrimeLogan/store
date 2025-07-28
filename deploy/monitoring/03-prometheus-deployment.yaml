@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus-deployment
+  namespace: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      serviceAccountName: prometheus
+      containers:
+        - name: prometheus
+          image: prom/prometheus:latest
+          args:
+            - "--config.file=/etc/prometheus/prometheus.yml"
+          ports:
+            - containerPort: 9090
+          # Add resource requests and limits for stable performance
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "512Mi"
+            limits:
+              cpu: "1"
+              memory: "2Gi"
+          volumeMounts:
+            - name: prometheus-config-volume
+              mountPath: /etc/prometheus/
+      volumes:
+        - name: prometheus-config-volume
+          configMap:
+            name: prometheus-config
