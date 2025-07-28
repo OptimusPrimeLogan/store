@@ -7,7 +7,6 @@ WORKDIR /home/gradle/src
 # Copy only the necessary build files first to leverage Docker's layer cache.
 # If these files don't change, Docker won't re-download dependencies.
 COPY build.gradle settings.gradle ./
-COPY gradle ./gradle
 
 # First, resolve and download dependencies. This creates a cached layer.
 RUN gradle dependencies --no-daemon
