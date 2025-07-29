@@ -29,7 +29,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: store-postgres-db-app # Secret created by CNPG
-                  key: jdbcUrl # CNPG provides a ready-to-use JDBC URL
+                  key: jdbc-uri # CNPG provides a ready-to-use JDBC URL
             - name: SPRING_DATASOURCE_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -40,17 +40,16 @@ spec:
                 secretKeyRef:
                   name: store-postgres-db-app
                   key: password
-          # Probes are crucial for Kubernetes to manage your app's lifecycle
           readinessProbe:
             httpGet:
               path: /actuator/health/readiness
-              port: http # or actuator port if different
+              port: http
             initialDelaySeconds: 20
             periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness
-              port: http # or actuator port if different
+              port: http
             initialDelaySeconds: 45
             periodSeconds: 15
           # Set resource requests and limits for stable performance
