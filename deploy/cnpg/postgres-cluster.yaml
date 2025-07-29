@@ -4,7 +4,7 @@ metadata:
   name: store-postgres-db
   namespace: prod
 spec:
-  instances: 2
+  instances: 3
   # Define the initial database and owner.
   bootstrap:
     initdb:
