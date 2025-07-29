@@ -55,7 +55,7 @@ The following is a summary of the refactoring work done for the Store applicatio
 ## Continuous Deployment (CD) and GitOps
 - The project is designed to be easily deployable in a production environment, in real time the `deploy` folder will be maintained as a separate project per environment (dev, test, prod) 
 - In realtime world, the image version can be updated in deployment or values yaml with GitHub Actions, which will trigger a deployment to the respective environment (But not with this example).
-- For simplicity, I have used microK8s as a local Kubernetes cluster installed in Ubuntu. 
+- For the interview purposes, I have used microK8s as a local Kubernetes cluster installed in Ubuntu (Can also be done in WSL2 - https://microk8s.io/docs/install-wsl2) . 
 - Let us assume you have microK8s installed and running on your local machine. You can deploy the application using the following command:
 ```shell
     # Enable the required addons in microk8s
