@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: store-postgres-db-mon
+  namespace: cnpg-system
+  labels:
+    release: kube-prom-stack
+spec:
+  namespaceSelector:
+    matchNames:
+      - prod
+  selector:
+    matchLabels:
+      cnpg.io/cluster: store-postgres-db
+  podMetricsEndpoints:
+    - port: metrics
+      path: /metrics
+      interval: 5s

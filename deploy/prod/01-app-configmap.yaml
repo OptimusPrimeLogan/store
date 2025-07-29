@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: store-app-config
+  namespace: prod
+data:
+  SPRING_PROFILES_ACTIVE: "prod"

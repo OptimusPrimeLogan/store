@@ -1,0 +1,20 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: store-app-monitor
+  namespace: prod
+  # This label is crucial. The MicroK8s Prometheus is configured to find
+  # ServiceMonitors with this label.
+  labels:
+    release: kube-prom-stack
+spec:
+  namespaceSelector:
+    matchNames:
+      - prod
+  selector:
+    matchLabels:
+      app: store-app
+  endpoints:
+    - port: http
+      path: /actuator/prometheus
+      interval: 5s

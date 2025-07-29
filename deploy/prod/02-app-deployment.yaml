@@ -22,11 +22,24 @@ spec:
           ports:
             - name: http
               containerPort: 8080
-          envFrom:
-            - configMapRef:
-                name: store-app-config
-            - secretRef:
-                name: store-app-secret
+                # Use environment variables sourced from the secret created by CloudNativePG.
+                # This decouples your application from the database credentials.
+          env:
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: store-postgres-db-app # Secret created by CNPG
+                  key: jdbcUrl # CNPG provides a ready-to-use JDBC URL
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: store-postgres-db-app
+                  key: username
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: store-postgres-db-app
+                  key: password
           # Probes are crucial for Kubernetes to manage your app's lifecycle
           readinessProbe:
             httpGet:

@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: store-app
+  namespace: argocd
+spec:
+  project: default
+
+  source:
+    repoURL: 'https://github.com/OptimusPrimeLogan/store.git'
+    targetRevision: main
+    # The path within the repository where the Kubernetes manifests are located
+    path: deploy/prod
+
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: prod
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    # This ensures that if the 'prod' namespace doesn't exist, Argo CD will create it.
+    syncOptions:
+      - CreateNamespace=true

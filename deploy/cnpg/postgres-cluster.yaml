@@ -1,0 +1,17 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: store-postgres-db
+  namespace: prod
+spec:
+  instances: 2
+  # Define the initial database and owner.
+  bootstrap:
+    initdb:
+      database: store_db
+      owner: store_user
+  storage:
+    size: 5Gi
+  # The operator automatically creates a secret named '<cluster-name>-app'
+  monitoring:
+    enablePodMonitor: true

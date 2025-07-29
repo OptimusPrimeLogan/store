@@ -41,7 +41,7 @@ public class OrderSimulation extends Simulation {
 
     // --- LOAD SETUP ---
     {
-        setUp(placeOrderScenario.injectOpen(rampUsers(100).during(Duration.ofSeconds(20))))
+        setUp(placeOrderScenario.injectOpen(rampUsers(300).during(Duration.ofSeconds(20))))
                 .protocols(Engine.httpProtocol);
     }
 }

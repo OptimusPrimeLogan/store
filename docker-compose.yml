@@ -23,8 +23,22 @@ services:
     container_name: prometheus
     ports:
       - "9090:9090"
-    volumes:
-      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        cat <<EOF > /tmp/prometheus.yml
+        global:
+          scrape_interval: 3s
+        scrape_configs:
+          - job_name: 'MyAppMetrics'
+            metrics_path: '/actuator/prometheus'
+            static_configs:
+              - targets: ['172.17.0.1:8080']
+                labels:
+                  application: 'Store App'
+        EOF
+        prometheus --config.file=/tmp/prometheus.yml
 
   grafana:
     image: grafana/grafana:latest
@@ -32,6 +46,21 @@ services:
     ports:
       - "3000:3000"
     restart: unless-stopped
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        mkdir -p /etc/grafana/provisioning/datasources
+        cat <<EOF > /etc/grafana/provisioning/datasources/datasources.yml
+        apiVersion: 1
+        datasources:
+          - name: Prometheus
+            type: prometheus
+            access: proxy
+            url: http://prometheus:9090
+            isDefault: true
+        EOF
+        /run.sh
 
 volumes:
   postgres:
