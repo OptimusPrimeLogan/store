@@ -81,7 +81,7 @@ The following is a summary of the refactoring work done for the Store applicatio
 ```shell
   kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath='{.data.password}' | base64 -d
 ```
-- Once deployment is complement, Update the Engine.java file with the service URL of the application, so that the Gatling tests can be run against the deployed application.
+- Optional for Ubuntu: Once deployment is completed, Update the Engine.java file with the service URL of the application, so that the Gatling tests can be run against the deployed application.
 ```shell
   kubectl get service store-app-svc -n prod -o jsonpath='{.spec.clusterIP}'
 ```

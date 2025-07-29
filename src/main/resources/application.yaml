@@ -10,10 +10,10 @@ spring:
     username: ${DB_USER:admin}
     password: ${DB_PASSWORD:admin}
     hikari:
-      maximum-pool-size: 20
+      maximum-pool-size: 50
       minimum-idle: 5
       idle-timeout: 60000
-      connection-timeout: 30000
+      connection-timeout: 50000
   jpa:
 #    show-sql: true
     hibernate:
