@@ -33,8 +33,8 @@ public class ProductSimulation extends Simulation {
     // --- LOAD SETUP ---
     {
         setUp(
-                        browseAllProducts.injectOpen(rampUsers(200).during(Duration.ofSeconds(20))),
-                        createAndFindProduct.injectOpen(rampUsers(200).during(Duration.ofSeconds(20))))
+                        browseAllProducts.injectOpen(rampUsers(150).during(Duration.ofSeconds(20))),
+                        createAndFindProduct.injectOpen(rampUsers(150).during(Duration.ofSeconds(20))))
                 .protocols(Engine.httpProtocol);
     }
 }

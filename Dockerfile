@@ -36,7 +36,7 @@ COPY --from=build /home/gradle/src/build/libs/*.jar app.jar
 # Expose the port the application runs on
 EXPOSE 8080
 
-ENV JAVA_OPTS="-XX:MaxRAMPercentage=75.0 -XX:+UseG1GC"
+ENV JAVA_OPTS="-XX:MaxRAMPercentage=50.0 -XX:+UseG1GC"
 
 # The entrypoint command to run the application
 ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]

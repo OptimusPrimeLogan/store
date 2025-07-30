@@ -33,6 +33,6 @@ public class CustomerSimulation extends Simulation {
 
     // --- LOAD SETUP ---
     {
-        setUp(createAndSearchCustomer.injectOpen(atOnceUsers(200))).protocols(Engine.httpProtocol);
+        setUp(createAndSearchCustomer.injectOpen(atOnceUsers(150))).protocols(Engine.httpProtocol);
     }
 }

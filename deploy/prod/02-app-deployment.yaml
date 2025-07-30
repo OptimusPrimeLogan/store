@@ -55,8 +55,8 @@ spec:
           # Set resource requests and limits for stable performance
           resources:
             requests:
-              cpu: "250m" # 0.25 CPU core
-              memory: "1Gi"
+              cpu: "250m"
+              memory: "512Mi"
             limits:
-              cpu: "1" # 1 CPU core
-              memory: "1.25Gi"
+              cpu: "500m"
+              memory: "768Mi"
