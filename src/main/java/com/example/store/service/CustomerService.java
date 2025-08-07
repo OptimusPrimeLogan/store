@@ -6,11 +6,10 @@ import com.example.store.entity.Customer;
 import com.example.store.mapper.CustomerMapper;
 import com.example.store.repository.CustomerRepository;
 
-import jakarta.transaction.Transactional;
-
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -29,6 +28,7 @@ public class CustomerService {
      * @param nameQuery The substring to search for in customer names.
      * @return A list of CustomerDTOs matching the search criteria.
      */
+    @Transactional(readOnly = true)
     public List<CustomerDTO> findCustomers(String nameQuery) {
         if (StringUtils.hasText(nameQuery)) {
             return customerMapper.customersToCustomerDTOs(customerRepository.findByNameContainingIgnoreCase(nameQuery));

@@ -12,8 +12,9 @@ spring:
     hikari:
       maximum-pool-size: 50
       minimum-idle: 5
-      idle-timeout: 60000
-      connection-timeout: 50000
+      idle-timeout: 60000 # 1 minute
+      connection-timeout: 15000 # Fail faster (15 seconds)
+      max-lifetime: 300000 # Retire connections after 5 minutes to prevent staleness
   jpa:
 #    show-sql: true
     hibernate:
@@ -60,4 +61,8 @@ management:
     livenessState:
       enabled: true
     readinessState:
+      enabled: true
+server:
+  tomcat:
+    mbeanregistry:
       enabled: true

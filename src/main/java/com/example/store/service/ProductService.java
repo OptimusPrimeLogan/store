@@ -7,12 +7,12 @@ import com.example.store.exception.ResourceNotFoundException;
 import com.example.store.mapper.ProductMapper;
 import com.example.store.repository.ProductRepository;
 
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,6 +23,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
 
+    @Transactional(readOnly = true)
     public List<ProductDTO> getAllProducts() {
         return productMapper.productsToProductDTOs(productRepository.findAll());
     }
@@ -34,6 +35,7 @@ public class ProductService {
         return productMapper.productToProductDTO(productRepository.save(newProduct));
     }
 
+    @Transactional(readOnly = true)
     public ProductDTO findProductById(Long id) {
         return productMapper.productToProductDTO(productRepository
                 .findById(id)

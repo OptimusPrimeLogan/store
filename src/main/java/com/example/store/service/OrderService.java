@@ -12,11 +12,10 @@ import com.example.store.repository.CustomerRepository;
 import com.example.store.repository.OrderRepository;
 import com.example.store.repository.ProductRepository;
 
-import jakarta.transaction.Transactional;
-
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -35,6 +34,7 @@ public class OrderService {
      *
      * @return A list of OrderDTOs representing all orders.
      */
+    @Transactional(readOnly = true)
     public List<OrderDTO> getAllOrders() {
         return orderMapper.ordersToOrderDTOs(orderRepository.findAll());
     }
@@ -82,6 +82,7 @@ public class OrderService {
      * @return The OrderDTO corresponding to the found order.
      * @throws ResourceNotFoundException if no order is found with the given ID.
      */
+    @Transactional(readOnly = true)
     public OrderDTO findOrderById(Long id) {
         Order order = orderRepository
                 .findById(id)
