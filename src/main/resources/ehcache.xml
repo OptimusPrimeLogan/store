@@ -9,7 +9,7 @@
             <ttl unit="minutes">10</ttl>
         </expiry>
         <!-- Max number of entries to keep in memory -->
-        <heap unit="entries">100</heap>
+        <heap>100</heap>
     </cache-template>
 
     <!--
@@ -18,7 +18,7 @@
     -->
     <cache alias="com.example.store.entity.Product" uses-template="default-template">
         <!-- You can override template settings here if needed -->
-        <heap unit="entries">1000</heap> <!-- Allow more products in memory -->
+        <heap>500</heap> <!-- Allow more products in memory -->
     </cache>
 
     <!--
